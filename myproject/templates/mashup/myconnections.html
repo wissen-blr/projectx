@@ -1,0 +1,132 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Welcome to Projectx</title>
+	<link href="http://app.projectx.com/media/css/layout.css" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]>
+	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+	<script src="http://code.jquery.com/jquery-latest.js" type="text/javascript"></script>
+	<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.js" type="text/javascript"></script>
+	<!-- Load Google APIs scripts -->
+	<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+
+	<script type='text/javascript'>
+		$(function(){
+	        $('ul.network-list').find('li:nth-child(2n)').addClass('zebra');
+	    })
+	</script>
+	<!--[if lt IE 9]><![endif]-->
+
+	<script type="text/javascript">
+		jQuery(document).ready(function() {
+			$(function(){
+				$('ul.network-list li').each(function() {
+					var id = $(this).find('a').attr('id');
+					$(this).click(function(){
+						//alert('Hello');
+						//alert("Entered click function");
+						var url = $(this).find('a').attr('rel');
+						$('#ajax_div').load(url);
+						//replaced get function with load function above.
+						/*$.get(url, function(msg){
+							//alert("Entered GET function");
+							//alert(msg);
+							$('#ajax_div').html(msg);
+						});*/
+						return false;
+					});
+				});
+			})
+		});
+	</script>
+</head>
+
+<body>
+<div class="wrapper">
+    <div class="container details">
+    	<!--Header : starts -->
+      <header>
+        <h4 class="logo">
+            <a href="/">Projectx</a>
+        </h4>
+      </header>
+      <!--Header : ends -->
+      <article class="content result">
+        <section>
+        	<!--User information : starts -->
+        	<div class="user-info">
+       	    	<img src="http://app.projectx.com/media/images/user-small.gif" width="29" height="37">{{ user.username }} | <a href="/accounts/logout/?next=/">Logout</a>
+            </div>
+            <!--User information : ends -->
+
+	        <!--Search - filter : starts -->
+	        <div class="search-filter">
+		        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+		        <form action="/{{ app_url }}filter/" method="post">{% csrf_token %}
+			        <div class="wrap">
+				        Company Name <input type="text" name="company" id="company" />
+			        </div>
+			        <div class="wrap">
+				        Location <input type="text" name="location" id="location" />
+			        </div>
+			        <div class="wrap">
+				        Industry <input type="text" name="industry" id="industry" />
+			        </div>
+			        <div class="wrap">
+				        School <input type="text" name="school" id="school" />
+			        </div>
+			        <br/>
+			        <div class="wrap">
+				        Characteristic
+				        <select name="characteristic" id="characteristic" >
+					        <option value=""></option>
+					        <option value="entrepreneurial">Entrepreneurial</option>
+				        </select>
+			        </div>
+			        <div class="wrap">
+				        Interest <input type="text" name="interest" id="interest" />
+			        </div>
+			        <div class="wrap">
+				        <input type="submit" name="" id="" value="Submit"/>
+			        </div>
+		        </form>
+	        </div>
+	        <!--Search - filter : starts -->
+        </section>
+
+        <div class="result-Wrapper">
+       	  <div class="networks">
+           	<h4>Network</h4>
+              {% if merged_connection_list %}
+                <ul class="network-list">
+                  {% for merged_connection in merged_connection_list %}
+               	    <li>
+                  		 <span class="imgWrap">
+                            <img src={{merged_connection.picture}} width=70 height=70>
+                        </span> 
+                        <a href="javascript:void(0);" rel="/{{ app_url }}connection/{{connection.id}}/?rank={{ forloop.counter }}">{{merged_connection.last_name}}, {{ merged_connection.first_name }}
+                        <p>{{merged_connection.first_name}} {{merged_connection.last_name}}<br>
+                        {{ merged_connection.source }}<br>
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% else %}
+                <p>No connections matching your search found. Remove some search criteria and try again.</p>
+              {% endif %}
+            </div>
+
+            <div class="details">
+	            <div id="ajax_div">
+	                <p>Click on a connection to see details.</p>
+	            </div>
+            </div>
+        </div>
+     </article>
+
+	</div>
+</div>
+</body>
+</html>

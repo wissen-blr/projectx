@@ -1,0 +1,78 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Welcome to Projectx</title>
+	<link href="http://app.projectx.com/media/css/layout.css" rel="stylesheet" type="text/css">
+	<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+</head>
+
+<body>
+<div class="wrapper">
+    <div class="container details">
+      <!--Header : starts -->
+      <header>
+        <h4 class="logo">
+            <a href="/{{ app_url }}">Projectx</a>
+        </h4>
+      </header>
+      <!--Header : ends -->
+      <article class="content result">
+        <section>
+        	<!--User information : starts -->
+        	<div class="user-info">
+       	    	<img src="http://app.projectx.com/media/images/user-small.gif" width="29" height="37">{{ user.username }}  (Friends : {{ num_friends }})| <a href="/accounts/logout/?next=/">Logout</a>
+            </div>
+            <!--User information : ends -->
+
+	        <!--Search - filter : starts -->
+	        <div class="search-filter">
+		        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+		        <form action="/{{ app_url }}filter/" method="post">{% csrf_token %}
+			        <div class="wrap">
+				        Company Name <input type="text" name="company" id="company" />
+			        </div>
+			        <div class="wrap">
+				        Location <input type="text" name="location" id="location" />
+			        </div>
+			        <div class="wrap">
+				        Industry <input type="text" name="industry" id="industry" />
+			        </div>
+			        <div class="wrap">
+				        School <input type="text" name="school" id="school" />
+			        </div>
+			        <br/>
+			        <div class="wrap">
+				        Characteristic
+				        <select name="characteristic" id="characteristic" >
+					        <option value=""></option>
+					        <option value="entrepreneurial">Entrepreneurial</option>
+				        </select>
+			        </div>
+			        <div class="wrap">
+				        Interest <input type="text" name="interest" id="interest" />
+			        </div>
+			        <div class="wrap">
+				        <input type="submit" name="" id="" value="Submit"/>
+			        </div>
+		        </form>
+	        </div>
+	        <!--Search - filter : starts -->
+
+        </section>
+
+        <section class="map">
+            <div id='map_canvas' class="map fl-r"></div><div id = "chart_div" class="pie-chart fl-l"></div><div id = "chart_div2" class="pie-chart fl-l"></div>
+	        Total #Facebook: {{ num_conns_dict.facebook }}, #LinkedIn: {{ num_conns_dict.linkedin }}, #Twitter: {{ num_conns_dict.twitter }}
+        </section>
+
+        <section>
+	        <!-- p class="social-btn"><a class="fb" href="/load_facebook/">Load Facebook Friends</a>  <a class="in" href="/load_linkedin/1/">Load Linkedin Connections</a></p-->
+	        <p class="social-btn"><a class="social_button" href="/load_facebook/">Load Facebook</a>  <a class="social_button" href="/load_linkedin/1/">Load LinkedIn</a>  <a class="social_button" href="/load_twitter_friends_and_followers">Load Twitter</a></p>
+	        <p class="social-btn"><a class="social_button" href="/merge_connections/">Merge Connections</a></p>
+        </section>
+     </article>
+    </div>
+</div>
+</body>
+</html>
